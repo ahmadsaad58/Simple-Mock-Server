@@ -20,9 +20,10 @@ public class Server {
 			// Reading lines
 			InputStreamReader isr = new InputStreamReader(clientSocket.getInputStream());
 			BufferedReader reader = new BufferedReader(isr);
-			// the request
+			
+			// the first line of response
 			String line = reader.readLine();
-			System.out.println(line);
+			String [] methodAndStatus = getStatus(line); 
 			
 			//Printer
 			PrintWriter printHelp = new PrintWriter(clientSocket.getOutputStream());
@@ -31,20 +32,20 @@ public class Server {
 			while (!line.isEmpty()) {
 				// check if the line contains GET
 				if (methodAndStatus[0].equals("GET")) {
-					int x = 1;
-					x++; 
+					System.out.println("inside get if");
 				}
 
-				methodAndStatus = getStatus(line);
 
 				System.out.println(line);
-
 				printHelp.print(line + "\r\n");
 				line = reader.readLine();
 
 			}
+			
+			isr.close();
+			reader.close();
+			printHelp.close();
 			clientSocket.close();
-
 		}
 
 	}
@@ -53,8 +54,7 @@ public class Server {
 		
 		// tokenize the first row
 		StringTokenizer parse = new StringTokenizer(line);
-			
-
+		
 		// the method we are dealing with
 		String method = "";  
 		// the file
