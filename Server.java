@@ -120,7 +120,7 @@ public class Server implements Runnable {
 
 	public static void main(String[] args) {
 		try {
-			// create the server socket 
+			// create the server socket... problem: resource leak
 			ServerSocket theConnection = new ServerSocket(8080);
 			System.out.println("The Server has started and is listening");
 			
@@ -142,80 +142,79 @@ public class Server implements Runnable {
 }
 
 		
+//TODO: block of code that could be used elsewhere
+// would delete such code but I may need it as project is incomplete
 
-
-
-// 		while (true) {
-// 			Socket clientSocket = server.accept();
-// 			// Reading lines
-// 			InputStreamReader inputStr = new InputStreamReader(clientSocket.getInputStream());
-// 			BufferedReader reader = new BufferedReader(inputStr);
+/** 
+		while (true) {
+			Socket clientSocket = server.accept();
+			// Reading lines
+			InputStreamReader inputStr = new InputStreamReader(clientSocket.getInputStream());
+			BufferedReader reader = new BufferedReader(inputStr);
 			
-// 			// the first line of response
-// 			String line = reader.readLine();
-// 			String [] methodAndStatus = getStatus(line); 
+			// the first line of response
+			String line = reader.readLine();
+			String [] methodAndStatus = getStatus(line); 
 			
-// 			//Printer
-// 			PrintWriter printHelp = new PrintWriter(clientSocket.getOutputStream());
+			//Printer
+			PrintWriter printHelp = new PrintWriter(clientSocket.getOutputStream());
 			
-// 			// Reads in the lines
-// 			while (!line.isEmpty()) {
-// 				// check if the line contains GET
-// 				if (methodAndStatus[0].equals("GET")) {
-// 					System.out.println("inside get if");
-// 				}
+			// Reads in the lines
+			while (!line.isEmpty()) {
+				// check if the line contains GET
+				if (methodAndStatus[0].equals("GET")) {
+					System.out.println("inside get if");
+				}
 
 
-// 				System.out.println(line);
-// 				printHelp.print(line + "\r\n");
-// 				line = reader.readLine();
+				System.out.println(line);
+				printHelp.print(line + "\r\n");
+				line = reader.readLine();
 
-// 			}
+			}
 			
-// 			inputStr.close();
-// 			reader.close();
-// 			printHelp.close();
-// 			clientSocket.close();
-// 		}
+			inputStr.close();
+			reader.close();
+			printHelp.close();
+			clientSocket.close();
+		}
 
-// 	}
+	}
 
-// 	public static String[] getStatus(String line) {
+	public static String[] getStatus(String line) {
 		
-// 		// tokenize the first row
-// 		StringTokenizer parse = new StringTokenizer(line);
+		// tokenize the first row
+		StringTokenizer parse = new StringTokenizer(line);
 		
-// 		// the method we are dealing with
-// 		String method = "";  
-// 		// the file
-// 		String file = "";
-// 		// Http style
-// 		String http = "";
-// 		try {
-// 			method = parse.nextToken().toUpperCase();
-// 			file = parse.nextToken().toLowerCase();
-// 			http = parse.nextToken().toLowerCase(); 
-// 		} catch (Exception e) {
-// 			e.printStackTrace();
-// 			http = null; 
-// 		}
+		// the method we are dealing with
+		String method = "";  
+		// the file
+		String file = "";
+		// Http style
+		String http = "";
+		try {
+			method = parse.nextToken().toUpperCase();
+			file = parse.nextToken().toLowerCase();
+			http = parse.nextToken().toLowerCase(); 
+		} catch (Exception e) {
+			e.printStackTrace();
+			http = null; 
+		}
 
-// 		// check http
-// 		if ( !http.equals("HTTP/1.1") ) {
-// 			return new String[] {method, "400 Bad Request"};
-// 		}
+		// check http
+		if ( !http.equals("HTTP/1.1") ) {
+			return new String[] {method, "400 Bad Request"};
+		}
 		
-// 		// check file
-// 		File lookingFor = new File(file);
-// 		if (!lookingFor.exists()) {
-// 			return new String[] {method, "404 Not Found"}; 
-// 		} 
+		// check file
+		File lookingFor = new File(file);
+		if (!lookingFor.exists()) {
+			return new String[] {method, "404 Not Found"}; 
+		} 
 
-// 		// everything is good
-// 		return new String[] {method, "200 OK"}; 
-// 	}
+		// everything is good
+		return new String[] {method, "200 OK"}; 
+	}
 
-	
+	*/
 
-
-// }
